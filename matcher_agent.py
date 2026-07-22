@@ -1,6 +1,8 @@
+import os
 from dotenv import load_dotenv
 from openai import OpenAI
-import os
+import openai
+from prompts import MATCHER_SYSTEM_PROMPT
 
 
 def is_bulleted(paragraph):
@@ -74,17 +76,52 @@ def load_post(path):
         return posting_text
 
 
-# Loading AI API key
-load_dotenv()
-key = os.getenv("OPENAI_API_KEY")
-print("Key loaded" if key else "Key missing; check your .env")
+def get_completion(system_prompt, user_message, model="gpt-4o-mini"):
+    """Send a system prompt and user message to the LLM, return the response text.
 
-# Loading resume
-resume_path = "inputs/resume.docx"
-resume_text = load_resume(resume_path)
-print(resume_text)
+    Args:
+        system_prompt (str): The system-level instructions for the model.
+        user_message (str): The user-role content (resume + posting, combined).
+        model (str): Which model to call.
 
-# Loading job description
-post_path = "inputs/posting.txt"
-post_text = load_post(post_path)
-print(post_text)
+    Returns:
+        str: The model's response text.
+    """
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message},
+        ],
+    )
+    return response.choices[0].message.content
+
+
+def main():
+    load_dotenv()
+    key = os.getenv("OPENAI_API_KEY")
+    print("Key loaded" if key else "Key missing; check your .env")
+
+    resume_path = "inputs/resume.docx"
+    resume_text = load_resume(resume_path)
+
+    post_path = "inputs/posting.txt"
+    post_text = load_post(post_path)
+
+    user_message = f"""Resume:\n{resume_text}\n\nJob Posting:\n{post_text}"""
+    try:
+        assessment = get_completion(MATCHER_SYSTEM_PROMPT, user_message, "gpt-4o")
+        print(assessment)
+    except openai.AuthenticationError as e:
+        print("Authentication failed; check that your API key is correct:", e)
+    except openai.RateLimitError as e:
+        print("Rate limit or credits depleted; check your credits:", e)
+    except openai.APIConnectionError as e:
+        print("Could not reach OpenAI's servers; check your internet connection:", e)
+    except openai.APIStatusError as e:
+        print(f"OpenAI API returned an error (status {e.status_code}):", e)
+
+
+if __name__ == "__main__":
+    main()
