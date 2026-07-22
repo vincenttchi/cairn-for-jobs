@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
+from openai import OpenAI
 import os
+
 
 def is_bulleted(paragraph):
     """Check whether a docx paragraph has bullet or numbered-list formatting.
@@ -16,10 +18,11 @@ def is_bulleted(paragraph):
     pPr = paragraph._p.pPr
     return pPr is not None and pPr.numPr is not None
 
+
 def load_resume(path):
     """
     Extract plaintext from a resume file.
-    
+
     Args:
         path (str): Path to the resume file. Currently supports .pdf and .docx.
 
@@ -31,10 +34,12 @@ def load_resume(path):
     """
     if path.endswith(".pdf"):
         import pdfplumber
+
         with pdfplumber.open(path) as pdf:
             return "\n".join(page.extract_text() or "" for page in pdf.pages)
     elif path.endswith(".docx"):
         from docx import Document
+
         doc = Document(path)
         lines = []
 
@@ -48,10 +53,38 @@ def load_resume(path):
     else:
         raise ValueError(f"Unsupported file type: {path}")
 
+
+def load_post(path):
+    """Load job posting text from a plain text file.
+
+    Args:
+        path (str): Path to the job posting text file.
+
+    Returns:
+        str: The job posting text.
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist at the given path.
+        ValueError: If the file is empty or contains only whitespace.
+    """
+    with open(path) as f:
+        posting_text = f.read().strip()
+        if len(posting_text) == 0:
+            raise ValueError(f"No job description passed in: {path}")
+        return posting_text
+
+
+# Loading AI API key
 load_dotenv()
 key = os.getenv("OPENAI_API_KEY")
 print("Key loaded" if key else "Key missing; check your .env")
 
-path = "inputs/resume.docx"
-resume_text = load_resume(path)
+# Loading resume
+resume_path = "inputs/resume.docx"
+resume_text = load_resume(resume_path)
 print(resume_text)
+
+# Loading job description
+post_path = "inputs/posting.txt"
+post_text = load_post(post_path)
+print(post_text)
