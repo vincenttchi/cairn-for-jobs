@@ -17,3 +17,7 @@ node_modules/
 # Obsidian local config (keep the template config out of noise)
 vault-template/.obsidian/workspace*
 vault-template/.obsidian/cache
+
+# Input files (resume and job description)\
+inputs/*
+!inputs/.gitkeep
