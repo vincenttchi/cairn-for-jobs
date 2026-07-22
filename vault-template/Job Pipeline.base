@@ -1,0 +1,72 @@
+filters:
+  and:
+    - 'file.hasTag("job-application")'
+
+properties:
+  company:
+    displayName: "Company"
+  role:
+    displayName: "Role"
+  status:
+    displayName: "Status"
+  date_applied:
+    displayName: "Applied"
+  follow_up_date:
+    displayName: "Follow up"
+  priority:
+    displayName: "Priority"
+  source:
+    displayName: "Source"
+
+views:
+  - type: table
+    name: "All applications"
+    order:
+      - company
+      - role
+      - status
+      - date_applied
+      - follow_up_date
+    sort:
+      - property: follow_up_date
+        direction: ASC
+
+  - type: table
+    name: "Active pipeline"
+    filters:
+      and:
+        - 'status != "archived"'
+        - 'status != "rejected"'
+    order:
+      - company
+      - role
+      - status
+      - follow_up_date
+    sort:
+      - property: follow_up_date
+        direction: ASC
+
+  - type: cards
+    name: "Pipeline board"
+    filters:
+      and:
+        - 'status != "archived"'
+    groupBy:
+      property: status
+    order:
+      - company
+      - role
+      - priority
+
+  - type: table
+    name: "Needs follow-up"
+    filters:
+      and:
+        - 'status == "applied"'
+    order:
+      - company
+      - role
+      - follow_up_date
+    sort:
+      - property: follow_up_date
+        direction: ASC

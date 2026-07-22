@@ -1,0 +1,19 @@
+# Secrets — never commit real keys
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node (in case any tooling gets added later)
+node_modules/
+
+# OS / editor junk
+.DS_Store
+*.log
+
+# Obsidian local config (keep the template config out of noise)
+vault-template/.obsidian/workspace*
+vault-template/.obsidian/cache
