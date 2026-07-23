@@ -1,8 +1,14 @@
 # Cairn for Jobs
 
-> _A cairn is a stack of stones marking the way forward — Cairn for Jobs is a stack of AI agents marking where you are in the search._
+[![Status](<https://img.shields.io/badge/Status-In_Development_(Phase_3)-orange?style=flat-square>)](#progress)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
+> _A cairn is a stack of stones marking the way forward — **Cairn for Jobs** is a stack of AI agents marking where you are in the search._
+
+> [!NOTE]
 > Status: early development — see [Progress](#progress) below for what's done so far.
+
+---
 
 ## The problem
 
@@ -11,6 +17,8 @@ job posting, drafting authentic cover letters, preparing for interview
 questions, and following up on applications can quickly become overwhelming.
 As you apply to more positions, keeping track of active leads, old postings,
 and tailored resumes becomes chaotic, leading to burnout and lost momentum.
+
+---
 
 ## The solution
 
@@ -28,6 +36,8 @@ description, and Cairn:
 3. **Tailors your materials:** Generates a list of suggested resume edits,
    highlights interview topics to study, and asks for your real-world
    experience before drafting a cover letter.
+
+---
 
 ## How the agents connect
 
@@ -55,6 +65,8 @@ flowchart TD
     class JM,RT,CL,IP,RV,AT agent
 ```
 
+---
+
 ## Design principles
 
 - **No web scraping.** You paste in job descriptions yourself, keeping
@@ -69,6 +81,8 @@ flowchart TD
 - **Obsidian is your database.** No separate apps or accounts needed. Your
   job applications are stored as plain text files on your device and
   organized automatically into interactive tables and visual boards.
+
+---
 
 ## Full pipeline overview
 
@@ -137,25 +151,51 @@ flowchart TD
     style legendGroup fill:#f9fafb,stroke:#6b7280,color:#374151
 ```
 
+---
+
 ## Setup
 
-1. Clone this repo
-2. Copy `.env.example` to `.env` and fill in your Anthropic and/or OpenAI key
-3. Open `vault-template/` as an Obsidian vault to see the frontmatter schema
-   and `.base` pipeline views
-4. (Agent scripts land in later phases; this repo is currently just the
-   foundation and Obsidian vault template)
+### Prerequisites
+
+- Obsidian (for viewing your vault & tracking job applications)
+- Python 3.10+ (for running agent scripts)
+
+### Quick Start
+
+1. **Clone this repository:**
+
+   ```bash
+   git clone https://github.com/vincenttchi/cairn-for-jobs.git
+   cd cairn-for-jobs
+   ```
+
+2. **Configure your environment:**
+
+```bash
+cp .env.example .env
+```
+
+_Open `.env` and fill in your Anthropic (`ANTHROPIC_API_KEY`) and/or OpenAI (`OPENAI_API_KEY`) credentials._
+
+3. **Explore the Obsidian vault template:**
+   Open `vault-template/` as an Obsidian vault to see the frontmatter schema and `.base` pipeline views.
+
+_(Agent scripts land in later phases; this repo is currently just the foundation and Obsidian vault template)_
+
+---
 
 ## Progress
 
 - [x] Phase 0 — Repo foundation and Obsidian vault template
 - [x] Phase 1 — Job matcher agent
 - [x] Phase 2 — Finalizing the pipeline design
-- [ ] Phase 3 — Resume tailor, cover letter, and interview prep agents (in progress)
+- [ ] Phase 3 — Resume tailor, cover letter, and interview prep agents _(In Progress)_
 - [ ] Phase 4 — Reviewer agent and revision loop
 - [ ] Phase 5 — App tracker agent and full pipeline orchestration
 - [ ] Phase 6 — Public release polish
 
+---
+
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
